@@ -5,7 +5,11 @@ __all__ = [
     "ParseError",
     "Parseable",
     "parse_from_literal",
+    "parse_from_regex",
 ]
+
+
+import re
 
 
 class ParseError(Exception):
@@ -26,7 +30,10 @@ class Parseable:
         raise NotImplementedError
 
     def __str__(self):
-        return str(self.match)
+        if isinstance(self.match, re.Match):
+            return self.match[0]
+        else:
+            return str(self.match)
 
 
 def parse_from_literal(literal):
@@ -35,6 +42,21 @@ def parse_from_literal(literal):
         def parse_from(string, index):
             if string[index : index + len(literal)] == literal:
                 return cls(literal), index + len(literal)
+            else:
+                raise ParseError
+        cls.parse_from = parse_from
+        return cls
+    return decorator
+
+
+def parse_from_regex(regex):
+    """Decorator for parsing class instances from a regex."""
+    pattern = re.compile(regex)
+    def decorator(cls):
+        def parse_from(string, index):
+            match = pattern.match(string, index)
+            if match:
+                return cls(match), index + len(match.group())
             else:
                 raise ParseError
         cls.parse_from = parse_from

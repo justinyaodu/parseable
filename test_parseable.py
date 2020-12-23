@@ -14,6 +14,16 @@ class ManyB(Parseable):
     pass
 
 
+@parse_from_regex(r"\s*([*/+-])(\s*)")
+class MathOperatorUnnamedGroup(Parseable):
+    pass
+
+
+@parse_from_regex(r"(\s*)(?P<str>[*/+-])(\s*)")
+class MathOperatorNamedGroup(Parseable):
+    pass
+
+
 class TestParseable(unittest.TestCase):
     def test_parseable_parse_from_not_implemented(self):
         with self.assertRaises(NotImplementedError):
@@ -51,3 +61,15 @@ class TestParseable(unittest.TestCase):
         b3, index = ManyB.parse_from(string, index)
         self.assertEqual(str(b3), "")
         self.assertEqual(index, 4)
+
+    def test_math_operator(self):
+        self._test_math_operator(MathOperatorUnnamedGroup)
+        self._test_math_operator(MathOperatorNamedGroup)
+
+    def _test_math_operator(self, cls):
+        string = "\n+ "
+        index = 0
+
+        op, index = cls.parse_from(string, index)
+        self.assertEqual(str(op), "+")
+        self.assertEqual(index, len(string))

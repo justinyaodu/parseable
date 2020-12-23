@@ -31,7 +31,13 @@ class Parseable:
 
     def __str__(self):
         if isinstance(self.match, re.Match):
-            return self.match[0]
+            group = self.match[0]
+            try:
+                group = self.match[1]
+                group = self.match["str"]
+            except IndexError:
+                pass
+            return group
         else:
             return str(self.match)
 

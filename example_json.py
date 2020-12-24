@@ -32,6 +32,28 @@ DoubleQuote = parse_from_literal("\"")()
 
 
 @parse_from_subclasses
+class JSONNumber(JSONValue):
+    pass
+
+
+@parse_from_regex(r"[0-9]+")
+class JSONInteger(JSONNumber):
+    @staticmethod
+    def compute_value(match):
+        return int(match[0])
+
+
+@parse_from_regex(r"[0-9eE+-.]+")
+class JSONFloat(JSONNumber):
+    @staticmethod
+    def compute_value(match):
+        try:
+            return float(match[0])
+        except ValueError as e:
+            raise ParseError from e
+
+
+@parse_from_subclasses
 class JSONChar(Parseable):
     pass
 

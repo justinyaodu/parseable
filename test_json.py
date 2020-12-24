@@ -28,6 +28,10 @@ class TestJSON(unittest.TestCase):
     def test_object(self):
         self.assertEqual(self.parsed('{"hello":"there"}'), dict(hello="there"))
 
+    def test_number(self):
+        self.assertEqual(self.parsed("2345"), 2345)
+        self.assertIsInstance(self.parsed("+23.45e9"), float)
+
     def test_string(self):
         self.assertEqual(
                 self.parsed(r'"1\\2\/3\"4\b5\f6\n7\r8\t9"'),

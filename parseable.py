@@ -27,7 +27,12 @@ class Parseable:
     Instances of this class form the nodes of a syntax tree.
     """
     def __init__(self, match):
-        self.match = match
+        """Initialize an object instance from the match object.
+
+        The type of the match object is determined by the implementation
+        of parse_of. Raise ParseError if the object instance cannot be
+        initialized from the match object.
+        """
         self.value = type(self).compute_value(match)
 
     @classmethod
@@ -54,17 +59,11 @@ class Parseable:
 
     @staticmethod
     def compute_value(match):
-        """Compute the parsed value of this node."""
-        return None
+        """Compute the parsed value of this node.
 
-    def __str__(self):
-        """Return the string which this object was parsed from."""
-        if isinstance(self.match, re.Match):
-            return self.match[0]
-        elif isinstance(self.match, str):
-            return self.match
-        else:
-            return "".join(str(m) for m in self.match)
+        Raise ParseError if the match cannot be parsed.
+        """
+        return None
 
 
 def parseable_decorator(class_decorator):

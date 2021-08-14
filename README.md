@@ -15,4 +15,4 @@
 
 ## Usage Example
 
-This [simple JSON parser](example_json.py) uses `parseable` to parse [JSON](https://www.json.org/) into Python objects, similar to the built-in `json.dumps` function.
+This [simple JSON parser](example_json.py) uses `parseable` to parse [JSON](https://www.json.org/) into Python objects, similar to the built-in `json.dumps` function. It's RFC 8259 compliant, according to nst's [JSON test suite](https://github.com/nst/JSONTestSuite), which I forked [here](https://github.com/justinyaodu/JSONTestSuite).
